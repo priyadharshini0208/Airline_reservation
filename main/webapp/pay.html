@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20190625/ourmid/pngtree-vector-business-mobile-payment-poster-image_261492.jpg'); 
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            flex-shrink: 0; /* Prevent header and footer from shrinking */
+        }
+
+        form {
+            max-width: 400px;
+            width:400px;
+            margin: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20190625/ourmid/pngtree-vector-business-mobile-payment-poster-image_261492.jpg'); 
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>PAYMENT PAGE</h2>
+    </header>
+
+    <form id="payment-form">
+        <label for="pin">PIN:</label>
+        <input type="password" id="pin" name="pin" pattern="\d{12}" title="PIN must be a 12-digit number" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" pattern="\d{6}" title="Password must be a 6-digit number" required>
+
+        <label for="class">Select Class:</label>
+        <select id="class" name="class" required size="3">
+            <option value="economy">Economy</option>
+            <option value="business">Business</option>
+            <option value="first">First Class</option>
+        </select>
+
+        <div class="error" id="error-message"></div>
+        <button type="button" onclick="validateAndSubmit()">Submit Payment</button>
+
+    </form>
+
+    <footer>
+        &copy; 2024 Payment System
+    </footer>
+
+    <script>
+        function validateAndSubmit() {
+            var pin = document.getElementById('pin').value;
+            var password = document.getElementById('password').value;
+            var selectedClass = document.getElementById('class').value;
+
+            // Simple validation
+            if (!/^\d{12}$/.test(pin) || !/^\d{6}$/.test(password)) {
+                document.getElementById('error-message').innerHTML = 'PIN must be 12 digits, and Password must be 6 digits.';
+                return;
+            }
+
+            // Additional business logic based on the selected class
+            var amount = 100000;
+            var multiplier;
+            switch (selectedClass) {
+                case 'economy':
+                    multiplier = 1;
+                    break;
+                case 'business':
+                    multiplier = 1.5;
+                    break;
+                case 'first':
+                    multiplier = 2;
+                    break;
+                default:
+                    multiplier = 1;
+            }
+
+            // Calculate the total amount
+            var totalAmount = amount * multiplier;
+
+            // Generate a random seat number within the limit of 120
+            var seatNumber = Math.floor(Math.random() * 120) + 1;
+            var timing="9 AM";
+
+            try {
+                // Display success message in an alert
+                var successMessage = "Payment Successful!\n\nTotal Amount: $" + totalAmount.toFixed(2) +
+                    "\nSelected Class: " + selectedClass + "\nSeat Number: " + seatNumber+"\nTiming: "+timing;
+
+                alert(successMessage);
+
+                // Clear the form fields
+                document.getElementById('pin').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('class').selectedIndex = 0; // Reset to the first option
+            } catch (error) {
+                console.error("Error displaying alert:", error);
+            }
+
+            // Clear any previous error message
+            document.getElementById('error-message').innerHTML = '';
+        }
+    </script>
+
+</body>
+</html>
+
